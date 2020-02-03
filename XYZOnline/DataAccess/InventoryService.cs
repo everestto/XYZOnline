@@ -21,6 +21,15 @@ namespace XYZOnline.DataAccess
                                 .ThenInclude(p => p.Group)
                             .FirstOrDefault(s=>s.ID==id);
         }
+        public IEnumerable<Inventory> GetInventoryByGroup(int id)
+        {
+            return _context.Inventories
+                 .Where(s => s.Product.Group.ID == id)
+                 .Include(s => s.Product)
+                     .ThenInclude(p => p.Group)
+                 .ToList();
+        }
+
         public IEnumerable<Inventory> GetInventories()
         {
             return _context.Inventories
@@ -112,6 +121,5 @@ namespace XYZOnline.DataAccess
             return items.Include(s => s.Product)
                             .ThenInclude(p => p.Group).ToList();
         }
-
     }
 }

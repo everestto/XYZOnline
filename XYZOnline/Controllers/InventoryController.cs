@@ -41,6 +41,19 @@ namespace XYZOnline.Controllers
             return Ok(inventory);
         }
 
+        // GET: api/Inventory/5
+        [HttpGet("Group/{id}", Name = "GetGroup")]
+        public IActionResult GetGroup(int id)
+        {
+
+            var inventory = _inventory.GetInventoryByGroup(id);
+            if (inventory == null)
+            {
+                return NotFound();
+            }
+            return Ok(inventory);
+        }
+
         #endregion
 
         #region Orders

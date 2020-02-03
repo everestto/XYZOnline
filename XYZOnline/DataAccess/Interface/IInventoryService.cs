@@ -9,6 +9,7 @@ namespace XYZOnline.DataAccess
     public interface IInventoryService
     {
         Inventory GetInventory(int id);
+        IEnumerable<Inventory> GetInventoryByGroup(int id);
         IEnumerable<Inventory> GetInventories();
         bool UpdateInventory(Item item);
         IEnumerable<Inventory> SearchInventories(string product, string group);
