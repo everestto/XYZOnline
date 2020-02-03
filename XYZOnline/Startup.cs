@@ -26,6 +26,7 @@ namespace XYZOnline
         {
             services.AddRazorPages();
             services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase(databaseName: "CertifiedInventoryData"));
+
             services.AddTransient<IInventoryService, InventoryService>()
                     .AddTransient<IProductService, ProductService>()
                     .AddTransient<IOrderService, OrderService>();

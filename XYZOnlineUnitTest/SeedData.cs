@@ -29,35 +29,36 @@ namespace XYZOnlineUnitTest
             // Look for any existing data.
             if (!context.Products.Any())
             {
+                // Production setup. Products need to exist first before they can be ordered and received in the inventory
                 context.Products.AddRange(
                     new Product
                     {
-                            // 1
-                            Name = "2019 Ford Edge",
+                        // 1
+                        Name = "2019 Ford Edge",
                         Description = "2019 Ford Edge Limited SUV",
                         Group = vehicle,
                         Price = 45390M
                     },
                     new Product
                     {
-                            // 2
-                            Name = "Apple iPhone 11 Pro Max",
+                        // 2
+                        Name = "Apple iPhone 11 Pro Max",
                         Description = "iPhone 11 Pro Max 256 GB",
                         Group = phone,
                         Price = 1390M
                     },
                     new Product
                     {
-                            // 3
-                            Name = "HP Spectre",
+                        // 3
+                        Name = "HP Spectre",
                         Description = "HP Spectre Laptop Computer",
                         Group = computer,
                         Price = 1190M
                     },
                     new Product
                     {
-                            // 4
-                            Name = "Samsung Galaxy Note10+",
+                        // 4
+                        Name = "Samsung Galaxy Note10+",
                         Description = "Samsung Galaxy Note 10 Plus 256 GB",
                         Group = phone,
                         Price = 999M
@@ -71,60 +72,63 @@ namespace XYZOnlineUnitTest
             {
                 OrderService orderService = new OrderService(context);
 
+                // Item Ordered to the inventory
+
                 orderService.ProcessOrder(
                     new Item
                     {
-                        Product = context.Products.Find(1), // product number 1
-                            Quantity = 2,
+                        Product = context.Products.Find(1), // product number 1 (2019 Ford Edge, Vehicle)
+                        Quantity = 2,
                         Date = new DateTime(2020, 01, 30)
                     }
                 );
                 orderService.ProcessOrder(
                     new Item
                     {
-                        Product = context.Products.Find(3), // product number 3
-                            Quantity = 12,
+                        Product = context.Products.Find(3), // product number 3 (HP Spectre, Computer)
+                        Quantity = 12,
                         Date = new DateTime(2020, 01, 31)
                     }
                 );
                 orderService.ProcessOrder(
                     new Item
                     {
-                        Product = context.Products.Find(2), // product number 2
-                            Quantity = 7,
+                        Product = context.Products.Find(2), // product number 2 (Apple iPhone 11 Pro Max, Phone)
+                        Quantity = 7,
                         Date = new DateTime(2020, 02, 01)
                     }
                 );
                 orderService.ProcessOrder(
                     new Item
                     {
-                        Product = context.Products.Find(3), // product number 3
-                            Quantity = 9,
+                        Product = context.Products.Find(3), // product number 3 (HP Spectre, Computer)
+                        Quantity = 9,
                     }
                 );
                 orderService.ProcessOrder(
                     new Item
                     {
-                        Product = context.Products.Find(4), // product number 4
-                            Quantity = 11,
+                        Product = context.Products.Find(4), // product number 4 (Samsung Galaxy Note10+, Phone)
+                        Quantity = 11,
                         Date = new DateTime(2020, 02, 02)
                     }
                 );
 
-                // Release
+                /**************************************************************************************/
+                // Item Released from the inventory
                 orderService.ProcessRelease(
                     new Item
                     {
-                        Product = context.Products.Find(2), // product number 2
-                            Quantity = 6,
+                        Product = context.Products.Find(2), // product number 2 (Apple iPhone 11 Pro Max, Phone)
+                        Quantity = 6,
                         Date = new DateTime(2020, 02, 02)
                     }
                 );
                 orderService.ProcessRelease(
                     new Item
                     {
-                        Product = context.Products.Find(4), // product number 4
-                            Quantity = 3,
+                        Product = context.Products.Find(4), // product number 4 (Samsung Galaxy Note10+, Phone)
+                        Quantity = 3,
                     }
                 );
 
