@@ -1,0 +1,84 @@
+﻿@page
+@model XYZOnline.Products.IndexModel
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h1>Products</h1>
+
+<p>
+    <a asp-page="NewProduct">New Product</a>
+</p>
+
+<div id="accordion" class="row col-md-8">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Filter...
+                </button>
+            </h5>
+        </div>
+        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+                <form method="post">
+                    <div class="input-group input-group-sm mb-3">
+                        <div>
+                            <input asp-for="ProductName" class="form-control" aria-label="Small">
+                        </div>
+                        <div>
+                            <input asp-for="ProductGroup" class="form-control">
+                        </div>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit" value="Search" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Products[0].ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Products[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Products[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Products[0].Group.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Products[0].Price)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var prod in Model.Products)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => prod.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => prod.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => prod.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => prod.Group.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => prod.Price)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,53 @@
+﻿@page
+
+@using XYZOnline.BusinessLogic
+@model XYZOnline.OrdersPage.OrdersModel
+@{
+    ViewData["Title"] = "New Order";
+}
+
+
+<h1>New Order</h1>
+<div class="row">
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="ProductID" class="control-label"></label>
+            <select asp-for="ProductID" asp-items="Model.ProductListOptions" class="form-control">
+                <option value="">- Select a product -</option>
+            </select>
+            <span asp-validation-for="ProductID" class="text-danger"></span>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="NewOrder.Quantity" class="control-label"></label>
+                <input asp-for="NewOrder.Quantity" class="form-control" />
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="NewOrder.UnitPrice" class="control-label"></label>
+                <input asp-for="NewOrder.UnitPrice" class="form-control" readonly="readonly" />
+            </div>
+            <span asp-validation-for="NewOrder.Quantity" class="text-danger"></span>
+            <span asp-validation-for="NewOrder.UnitPrice" class="text-danger"></span>
+        </div>
+        <hr />
+        <div class="form-group">
+            <input type="submit" value="Post" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+@section scripts{
+    <script>
+        document.getElementById('ProductID').addEventListener('change', (e) => {
+            document.getElementById('NewOrder_UnitPrice').value = "";
+        fetch(`?handler=UnitPrice&ProductID=${e.target.value}`)
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                document.getElementById('NewOrder_UnitPrice').value = data;
+            });
+    });
+    </script>
+}

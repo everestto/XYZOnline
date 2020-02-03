@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using XYZOnline.DataAccess;
 
 namespace XYZOnline
 {
@@ -23,6 +25,10 @@ namespace XYZOnline
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase(databaseName: "CertifiedInventoryData"));
+            services.AddTransient<IInventoryService, InventoryService>()
+                    .AddTransient<IProductService, ProductService>()
+                    .AddTransient<IOrderService, OrderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,7 +51,8 @@ namespace XYZOnline
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapRazorPages(); 
+                endpoints.MapControllers();
             });
         }
     }

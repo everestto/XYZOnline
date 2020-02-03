@@ -1,0 +1,94 @@
+﻿@page
+@model XYZOnline.InventoryPage.IndexModel
+@{
+    ViewData["Title"] = "Inventory";
+}
+
+<h1>Inventory</h1>
+<div id="accordion" class="row col-md-8">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Filter...
+                </button>
+            </h5>
+        </div>
+        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+                <form method="post">
+                    <div class="input-group input-group-sm mb-3">
+                        <div>
+                            <input asp-for="ProductName" class="form-control" aria-label="Small">
+                        </div>
+                        <div>
+                            <input asp-for="ProductGroup" class="form-control">
+                        </div>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit" value="Search" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Inventories[0].ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Inventories[0].Product.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Inventories[0].Product.Group.Name)
+            </th>
+            <th class="text-right">
+                @Html.DisplayNameFor(model => model.Inventories[0].Quantity)
+            </th>
+            <th class="text-right">
+                @Html.DisplayNameFor(model => model.Inventories[0].UnitPrice)
+            </th>
+            <th class="text-right">
+                @Html.DisplayNameFor(model => model.Inventories[0].TotalValue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Inventories[0].Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Inventories)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Group.Name)
+            </td>
+            <td class="text-right">
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td class="text-right">
+                @Html.DisplayFor(modelItem => item.UnitPrice)
+            </td>
+            <td class="text-right">
+                @Html.DisplayFor(modelItem => item.TotalValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
