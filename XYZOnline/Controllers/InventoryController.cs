@@ -86,7 +86,7 @@ namespace XYZOnline.Controllers
 
         #endregion
 
-        #region Sales
+        #region Releases
 
         // GET: api/Inventory/Releases
         [HttpGet("Releases", Name = "GetReleases")]

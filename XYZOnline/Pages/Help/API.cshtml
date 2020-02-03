@@ -3,10 +3,61 @@
     ViewData["Title"] = "API";
 }
 
-<h1>API</h1>
+<h4>API</h4>
+<p>
+    I took extra time to ensure I avail all services on the Web to the API. To reduce the complexity of the JSON objects,
+    I allowed the API to receive JSON objects with basic fields.
+</p>
 
+<h5>Inventory</h5>
+<p>
+    Use this service to view the list of all items in the inventory and their positions and statuses
+</p>
 <pre>
-    <code>
+<code>
+        GET: http://localhost:23323/api/inventory
+    </code>
+</pre>
+
+<h5>Products</h5>
+<p>
+    Use this service to view the list of all products in the system. You can also introduce a new product by calling the POST below. See sample JSON.
+</p>
+<pre>
+<code>
+        GET: http://localhost:23323/api/inventory/products
+        GET: http://localhost:23323/api/inventory/product/3
+
+        POST: http://localhost:23323/api/inventory/product
+        {
+        "name": "2020 Tesla Model 3",
+        "description": "2020 Tesla Model 3 Performance",
+        "group": {
+        "id": 1,
+        "name": "Vehicle"
+        },
+        "price": 41390
+        }
+    </code>
+</pre>
+
+<h5>Orders/Releases</h5>
+<p>
+    Use the GET request below to see all existing orders. You can also post a new Order by calling the POST method below. To make any changes to the inventory balances,
+    you either post an order or post a release. <b>Orders</b> must be made on valid existing products while <b>Releases</b> must be based on exiting products with positive inventory balances or <b>Instock</b>.
+    The ERP system has to post an Order or a Release to update the inventory counts.
+</p>
+<p>The product ID must be valid. The name is required but not validated. System will use the <b>Product ID</b> to find the product and rectify the name.</p>
+<pre>
+<code>
+        GET: http://localhost:23323/api/inventory/orders
+        GET: http://localhost:23323/api/inventory/order/4
+
+        GET: http://localhost:23323/api/inventory/releases
+        GET: http://localhost:23323/api/inventory/release/9
+
+        POST: http://localhost:23323/api/inventory/order
+        POST: http://localhost:23323/api/inventory/release
         {
         "product": {
         "id": 6,
@@ -16,3 +67,4 @@
         }
     </code>
 </pre>
+<p>The Orders and Releases are inquiries into history of what had been ordered or released.</p>
