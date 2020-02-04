@@ -8,6 +8,7 @@ namespace XYZOnline.BusinessLogic
 {
     public class Product
     {
+        [Display(Name = "Prod ID")]
         public int ID { get; set; }
 
         [Display(Name="Product Name")]

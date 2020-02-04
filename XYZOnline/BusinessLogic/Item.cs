@@ -6,6 +6,7 @@ namespace XYZOnline.BusinessLogic
 {
     public class Item
     {
+        [Display(Name = "Entry ID")]
         public int ID { get; set; }
         public Product Product { get; set; }
         public ItemType Type { get; set; }

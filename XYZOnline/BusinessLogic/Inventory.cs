@@ -9,6 +9,7 @@ namespace XYZOnline.BusinessLogic
 {
     public class Inventory
     {
+        [Display(Name = "Inv ID")]
         public int ID { get; set; }
         public Product Product { get; set; }
         public ItemStatus Status { get; set; }
