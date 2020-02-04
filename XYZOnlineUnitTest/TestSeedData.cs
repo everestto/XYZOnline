@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using XYZOnline.BusinessLogic;
 using XYZOnline.DataAccess;
+using System.Threading.Tasks;
 
 namespace XYZOnlineUnitTest
 {
-    public class SeedData
+    public class TestSeedData
     {
-        public static void Initialize(DataContext context)
+        public static async Task InitializeAsync(DataContext context)
         {
             // Look for any existing data.
             if (!context.ProductGroups.Any())
@@ -74,7 +75,7 @@ namespace XYZOnlineUnitTest
 
                 // Item Ordered to the inventory
 
-                orderService.ProcessOrder(
+                await orderService.ProcessOrder(
                     new Item
                     {
                         Product = context.Products.Find(1), // product number 1 (2019 Ford Edge, Vehicle)
@@ -82,7 +83,7 @@ namespace XYZOnlineUnitTest
                         Date = new DateTime(2020, 01, 30)
                     }
                 );
-                orderService.ProcessOrder(
+                await orderService.ProcessOrder(
                     new Item
                     {
                         Product = context.Products.Find(3), // product number 3 (HP Spectre, Computer)
@@ -90,7 +91,7 @@ namespace XYZOnlineUnitTest
                         Date = new DateTime(2020, 01, 31)
                     }
                 );
-                orderService.ProcessOrder(
+                await orderService.ProcessOrder(
                     new Item
                     {
                         Product = context.Products.Find(2), // product number 2 (Apple iPhone 11 Pro Max, Phone)
@@ -98,14 +99,14 @@ namespace XYZOnlineUnitTest
                         Date = new DateTime(2020, 02, 01)
                     }
                 );
-                orderService.ProcessOrder(
+                await orderService.ProcessOrder(
                     new Item
                     {
                         Product = context.Products.Find(3), // product number 3 (HP Spectre, Computer)
                         Quantity = 9,
                     }
                 );
-                orderService.ProcessOrder(
+                await orderService.ProcessOrder(
                     new Item
                     {
                         Product = context.Products.Find(4), // product number 4 (Samsung Galaxy Note10+, Phone)
@@ -116,7 +117,7 @@ namespace XYZOnlineUnitTest
 
                 /**************************************************************************************/
                 // Item Released from the inventory
-                orderService.ProcessRelease(
+                await orderService.ProcessRelease(
                     new Item
                     {
                         Product = context.Products.Find(2), // product number 2 (Apple iPhone 11 Pro Max, Phone)
@@ -124,7 +125,7 @@ namespace XYZOnlineUnitTest
                         Date = new DateTime(2020, 02, 02)
                     }
                 );
-                orderService.ProcessRelease(
+                await orderService.ProcessRelease(
                     new Item
                     {
                         Product = context.Products.Find(4), // product number 4 (Samsung Galaxy Note10+, Phone)
