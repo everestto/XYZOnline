@@ -10,7 +10,7 @@ namespace XYZOnline.BusinessLogic
         public Product Product { get; set; }
         public ItemType Type { get; set; }
 
-        [Range(0, int.MaxValue, ErrorMessage = "Only positive number allowed")]
+        [Range(1, int.MaxValue, ErrorMessage = "Only positive number allowed")]
         public int Quantity { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N}")]
