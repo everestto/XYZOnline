@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace XYZOnline.DataAccess
 {
@@ -14,35 +15,35 @@ namespace XYZOnline.DataAccess
             _context = context;
         }
 
-        public Inventory GetInventory(int id)
+        public async Task<Inventory> GetInventory(int id)
         {
-            return _context.Inventories
+            return await _context.Inventories
                             .Include(s => s.Product)
                                 .ThenInclude(p => p.Group)
-                            .FirstOrDefault(s=>s.ID==id);
+                            .FirstOrDefaultAsync(s=>s.ID==id);
         }
-        public IEnumerable<Inventory> GetInventoryByGroup(int id)
+        public async Task<List<Inventory>> GetInventoryByGroup(int id)
         {
-            return _context.Inventories
+            return await _context.Inventories
                  .Where(s => s.Product.Group.ID == id)
                  .Include(s => s.Product)
                      .ThenInclude(p => p.Group)
-                 .ToList();
+                 .ToListAsync();
         }
 
-        public IEnumerable<Inventory> GetInventories()
+        public async Task<List<Inventory>> GetInventories()
         {
-            return _context.Inventories
+            return await _context.Inventories
                             .Include(s => s.Product)
                                 .ThenInclude(p => p.Group)
-                            .ToList();
+                            .ToListAsync();
         }
 
-        public bool UpdateInventory(Item item)
+        public async Task<bool> UpdateInventory(Item item)
         {
             ErrorMessage = "";
 
-            bool exists = _context.Inventories.Any(s => s.Product == item.Product);
+            bool exists = await _context.Inventories.AnyAsync(s => s.Product == item.Product);
 
             if (!exists) // New to Inventory
             {
@@ -61,12 +62,12 @@ namespace XYZOnline.DataAccess
                     Status = ItemStatus.Instock
                 };
 
-                _context.Inventories.Add(newInventory);
+                await _context.Inventories.AddAsync(newInventory);
                 return true;
             }
 
             // Already existing in inventory
-            Inventory inventory = _context.Inventories.FirstOrDefault(s => s.Product == item.Product);
+            Inventory inventory = await _context.Inventories.FirstOrDefaultAsync(s => s.Product == item.Product);
 
             int sign = 1;
 
@@ -101,7 +102,7 @@ namespace XYZOnline.DataAccess
             return true;
         }
         public string ErrorMessage { get; set; }
-        public IEnumerable<Inventory> SearchInventories(string product, string group)
+        public async Task<List<Inventory>> SearchInventories(string product, string group)
         {
             IQueryable<Inventory> items;
             if (!string.IsNullOrEmpty(product) && !string.IsNullOrEmpty(group))
@@ -118,8 +119,8 @@ namespace XYZOnline.DataAccess
             else
                 items = _context.Inventories;
 
-            return items.Include(s => s.Product)
-                            .ThenInclude(p => p.Group).ToList();
+            return await items.Include(s => s.Product)
+                            .ThenInclude(p => p.Group).ToListAsync();
         }
     }
 }

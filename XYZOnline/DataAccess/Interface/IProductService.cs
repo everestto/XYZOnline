@@ -8,13 +8,13 @@ namespace XYZOnline.DataAccess
 {
     public interface IProductService
     {
-        public Product GetProduct(int id);
-        public IEnumerable<Product> GetProducts();
-        public ProductGroup GetProductGroup(int id);
-        public IEnumerable<ProductGroup> GetProductGroups();
-        bool Add(Product product);
-        public string ErrorMessage { get; set; }
-        public IEnumerable<Product> SearchProducts(string product, string group);
+        Task<Product> GetProduct(int id);
+        Task<List<Product>> GetProducts();
+        Task<ProductGroup> GetProductGroup(int id);
+        Task<List<ProductGroup>> GetProductGroups();
+        Task<bool> Add(Product product);
+        string ErrorMessage { get; set; }
+        Task<List<Product>> SearchProducts(string product, string group);
 
     }
 }

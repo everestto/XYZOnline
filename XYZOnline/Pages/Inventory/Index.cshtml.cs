@@ -28,13 +28,16 @@ namespace XYZOnline.InventoryPage
 
         public List<Inventory> Inventories { get; set; }
 
-        public void OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-            Inventories = _service.GetInventories().ToList();
+            Inventories = await _service.GetInventories();
+            return Page();
         }
-        public void OnPost()
+
+        public async Task OnPostAsync()
         {
-            Inventories = _service.SearchInventories(ProductName,ProductGroup).ToList();
+            Inventories = await _service.SearchInventories(ProductName, ProductGroup);
         }
+
     }
 }

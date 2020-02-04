@@ -10,7 +10,7 @@ namespace XYZOnline.DataAccess
 {
     public class SeedData
     {
-        public static void Initialize(IServiceProvider serviceProvider)
+        public static async Task InitializeAsync(IServiceProvider serviceProvider)
         {
             using (var context = new DataContext(serviceProvider.GetRequiredService<DbContextOptions<DataContext>>()))
             {
@@ -82,15 +82,15 @@ namespace XYZOnline.DataAccess
                 {
                     OrderService orderService = new OrderService(context);
 
-                    orderService.ProcessOrder(
+                    await orderService.ProcessOrder(
                         new Item
                         {
                             Product = context.Products.Find(1), // product number 1
                             Quantity = 2,
-                            Date=new DateTime(2020,01,30)
+                            Date = new DateTime(2020, 01, 30)
                         }
                     );
-                    orderService.ProcessOrder(
+                    await orderService.ProcessOrder(
                         new Item
                         {
                             Product = context.Products.Find(3), // product number 3
@@ -98,7 +98,7 @@ namespace XYZOnline.DataAccess
                             Date = new DateTime(2020, 01, 31)
                         }
                     );
-                    orderService.ProcessOrder(
+                    await orderService.ProcessOrder(
                         new Item
                         {
                             Product = context.Products.Find(5), // product number 5
@@ -106,7 +106,7 @@ namespace XYZOnline.DataAccess
                             Date = new DateTime(2020, 01, 31)
                         }
                     );
-                    orderService.ProcessOrder(
+                    await orderService.ProcessOrder(
                         new Item
                         {
                             Product = context.Products.Find(2), // product number 2
@@ -114,7 +114,7 @@ namespace XYZOnline.DataAccess
                             Date = new DateTime(2020, 02, 01)
                         }
                     );
-                    orderService.ProcessOrder(
+                    await orderService.ProcessOrder(
                         new Item
                         {
                             Product = context.Products.Find(5), // product number 5
@@ -122,14 +122,14 @@ namespace XYZOnline.DataAccess
                             Date = new DateTime(2020, 02, 01)
                         }
                     );
-                    orderService.ProcessOrder(
+                    await orderService.ProcessOrder(
                         new Item
                         {
                             Product = context.Products.Find(3), // product number 3
                             Quantity = 9,
                         }
                     );
-                    orderService.ProcessOrder(
+                    await orderService.ProcessOrder(
                         new Item
                         {
                             Product = context.Products.Find(4), // product number 5
@@ -137,7 +137,7 @@ namespace XYZOnline.DataAccess
                             Date = new DateTime(2020, 02, 02)
                         }
                     );
-                    orderService.ProcessOrder(
+                    await orderService.ProcessOrder(
                         new Item
                         {
                             Product = context.Products.Find(1), // product number 1
@@ -147,7 +147,7 @@ namespace XYZOnline.DataAccess
                     );
 
                     // Release
-                    orderService.ProcessRelease(
+                    await orderService.ProcessRelease(
                         new Item
                         {
                             Product = context.Products.Find(1), // product number 1
@@ -155,7 +155,7 @@ namespace XYZOnline.DataAccess
                             Date = new DateTime(2020, 02, 02)
                         }
                     );
-                    orderService.ProcessRelease(
+                    await orderService.ProcessRelease(
                         new Item
                         {
                             Product = context.Products.Find(3), // product number 3

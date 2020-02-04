@@ -41,24 +41,21 @@ namespace XYZOnline.SalesPage
 
         public SelectList ProductListOptions { get; set; }
 
-        //[BindProperty]
-        //public int ProdType { get; set; }
-
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-            PopulateLists();
+            await PopulateListsAsync();
             return Page();
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
-            PopulateLists();
+            await PopulateListsAsync();
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            Product product = _product.GetProduct(ProductID);
+            Product product = await _product.GetProduct(ProductID);
             Item releaseItem = new Item
             {
                 Product = product,
@@ -66,7 +63,7 @@ namespace XYZOnline.SalesPage
                 Price = Release.UnitPrice,
             };
 
-           bool success= _service.ProcessRelease(releaseItem);
+           bool success= await _service.ProcessRelease(releaseItem);
             if (!success)
             {                
                 ModelState.AddModelError("", _service.ErrorMessage);
@@ -76,15 +73,16 @@ namespace XYZOnline.SalesPage
             return RedirectToPage("Index");
         }
 
-        public void PopulateLists()
+        public async Task PopulateListsAsync()
         {
-            var products = _product.GetProducts();
+            var products = await _product.GetProducts();
             ProductListOptions = new SelectList(products, nameof(Product.ID), nameof(Product.Name));
         }
 
-        public JsonResult OnGetUnitPrice()
+        public async Task<JsonResult> OnGetUnitPriceAsync()
         {
-            var json=new JsonResult(_product.GetProduct(ProductID).Price);
+            var product = await _product.GetProduct(ProductID);
+            var json = new JsonResult(product.Price);
             return json;
         }
     }

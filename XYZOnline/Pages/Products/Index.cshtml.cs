@@ -29,13 +29,13 @@ namespace XYZOnline.Products
 
         public List<Product> Products { get; set; }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            Products = _service.GetProducts().ToList();
+            Products = await _service.GetProducts();
         }
-        public void OnPost()
+        public async Task OnPostAsync()
         {
-            Products = _service.SearchProducts(ProductName, ProductGroup).ToList();
+            Products = await _service.SearchProducts(ProductName, ProductGroup);
         }
     }
 }

@@ -8,10 +8,10 @@ namespace XYZOnline.DataAccess
 {
     public interface IInventoryService
     {
-        Inventory GetInventory(int id);
-        IEnumerable<Inventory> GetInventoryByGroup(int id);
-        IEnumerable<Inventory> GetInventories();
-        bool UpdateInventory(Item item);
-        IEnumerable<Inventory> SearchInventories(string product, string group);
+        Task<Inventory> GetInventory(int id);
+        Task<List<Inventory>> GetInventoryByGroup(int id);
+        Task<List<Inventory>> GetInventories();
+        Task<bool> UpdateInventory(Item item);
+        Task<List<Inventory>> SearchInventories(string product, string group);
     }
 }

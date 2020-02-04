@@ -2,6 +2,7 @@
 using XYZOnline.DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace XYZOnline.Controllers
 {
@@ -24,16 +25,16 @@ namespace XYZOnline.Controllers
 
         // GET: api/Inventory
         [HttpGet]
-        public IEnumerable<Inventory> Get()
+        public async Task<List<Inventory>> Get()
         {
-            return _inventory.GetInventories();
+            return await _inventory.GetInventories();
         }
 
         // GET: api/Inventory/5
         [HttpGet("{id}", Name = "Get")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var inventory = _inventory.GetInventory(id);
+            var inventory = await _inventory.GetInventory(id);
             if (inventory == null)
             {
                 return NotFound();
@@ -43,10 +44,10 @@ namespace XYZOnline.Controllers
 
         // GET: api/Inventory/5
         [HttpGet("Group/{id}", Name = "GetGroup")]
-        public IActionResult GetGroup(int id)
+        public async Task<IActionResult> GetGroup(int id)
         {
 
-            var inventory = _inventory.GetInventoryByGroup(id);
+            var inventory = await _inventory.GetInventoryByGroup(id);
             if (inventory == null)
             {
                 return NotFound();
@@ -60,16 +61,16 @@ namespace XYZOnline.Controllers
 
         // GET: api/Inventory/Orders
         [HttpGet("Orders", Name = "GetOrders")]
-        public IEnumerable<Item> GetOrders()
+        public async Task<List<Item>> GetOrders()
         {
-            return _order.GetOrders();
+            return await _order.GetOrders();
         }
 
         // GET: api/Inventory/Order/5
         [HttpGet("Order/{id}", Name = "GetOrder")]
-        public IActionResult GetOrder(int id)
+        public async Task<IActionResult> GetOrder(int id)
         {
-            var order = _order.GetOrder(id);
+            var order = await _order.GetOrder(id);
             if (order == null)
             {
                 return NotFound();
@@ -79,17 +80,17 @@ namespace XYZOnline.Controllers
 
         // POST: api/Inventory/Order
         [HttpPost("Order", Name = "PostOrder")]
-        public IActionResult PostOrder([FromBody] Item item)
+        public async Task<IActionResult> PostOrder([FromBody] Item item)
         {
             if (item == null)
             {
                 return NotFound();
             }
 
-            Product product = _product.GetProduct(item.Product.ID);
+            Product product = await _product.GetProduct(item.Product.ID);
             item.Product = product; // overwrite the product to ensure consistency of ID and name and also prevent inserting new product
             
-            bool successful = _order.ProcessOrder(item);
+            bool successful = await _order.ProcessOrder(item);
 
             if (successful)
                 return Ok(item);
@@ -103,16 +104,16 @@ namespace XYZOnline.Controllers
 
         // GET: api/Inventory/Releases
         [HttpGet("Releases", Name = "GetReleases")]
-        public IEnumerable<Item> GetReleases()
+        public async Task<List<Item>> GetReleases()
         {
-            return _order.GetReleaseItems();
+            return await _order.GetReleaseItems();
         }
 
         // GET: api/Inventory/Release/5
         [HttpGet("Release/{id}", Name = "GetRelease")]
-        public IActionResult GetRelease(int id)
+        public async Task<IActionResult> GetRelease(int id)
         {
-            var order = _order.GetReleaseItem(id);
+            var order = await _order.GetReleaseItem(id);
             if (order == null)
             {
                 return NotFound();
@@ -122,17 +123,17 @@ namespace XYZOnline.Controllers
 
         // POST: api/Inventory/Sale
         [HttpPost("Release", Name = "PostRelease")]
-        public IActionResult PostRelease([FromBody] Item item)
+        public async Task<IActionResult> PostRelease([FromBody] Item item)
         {
             if (item == null)
             {
                 return NotFound();
             }
 
-            Product product = _product.GetProduct(item.Product.ID);
+            Product product = await _product.GetProduct(item.Product.ID);
             item.Product = product; // overwrite the product to ensure consistency of ID and name and also prevent inserting new product
 
-            bool successful = _order.ProcessRelease(item);
+            bool successful = await _order.ProcessRelease(item);
 
             if (successful)
                 return Ok(item);
@@ -148,16 +149,16 @@ namespace XYZOnline.Controllers
 
         // GET: api/Inventory/Products
         [HttpGet("Products", Name = "GetProducts")]
-        public IEnumerable<Product> GetProducts()
+        public async Task<List<Product>> GetProducts()
         {
-            return _product.GetProducts();
+            return await _product.GetProducts();
         }
 
         // GET: api/Inventory/5
         [HttpGet("Product/{id}", Name = "GetProduct")]
-        public IActionResult GetProduct(int id)
+        public async Task<IActionResult> GetProduct(int id)
         {
-            var product = _product.GetProduct(id);
+            var product = await _product.GetProduct(id);
             if (product == null)
             {
                 return NotFound();
@@ -167,13 +168,13 @@ namespace XYZOnline.Controllers
 
         // POST: api/Inventory/Product
         [HttpPost("Product", Name = "PostProduct")]
-        public IActionResult PostProduct([FromBody] Product product)
+        public async Task<IActionResult> PostProduct([FromBody] Product product)
         {
             if (product == null)
             {
                 return NotFound();
             }
-            bool successful = _product.Add(product);
+            bool successful = await _product.Add(product);
 
             if (successful)
                 return Ok(product);

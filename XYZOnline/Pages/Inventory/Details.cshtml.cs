@@ -20,9 +20,9 @@ namespace XYZOnline.InventoryPage
 
         public Inventory Inventory { get; set; }
 
-        public void OnGet(int id)
+        public async Task OnGetAsync(int id)
         {
-            Inventory = _service.GetInventory(id);
+            Inventory = await _service.GetInventory(id);
         }
     }
 }

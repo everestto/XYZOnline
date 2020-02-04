@@ -8,14 +8,14 @@ namespace XYZOnline.DataAccess
 {
     public interface IOrderService
     {
-        Item GetReleaseItem(int id);
-        IEnumerable<Item> GetReleaseItems();
-        Item GetOrder(int id);
-        IEnumerable<Item> GetOrders();
-        IEnumerable<Item> SearchOrders(string product,string group, ItemType itemType);
+        Task<Item> GetReleaseItem(int id);
+        Task<List<Item>> GetReleaseItems();
+        Task<Item> GetOrder(int id);
+        Task<List<Item>> GetOrders();
+        Task<List<Item>> SearchOrders(string product,string group, ItemType itemType);
         string ErrorMessage { get; set; }
-        bool ProcessOrder(Item item);
-        bool ProcessRelease(Item item);
+        Task<bool> ProcessOrder(Item item);
+        Task<bool> ProcessRelease(Item item);
 
     }
 }

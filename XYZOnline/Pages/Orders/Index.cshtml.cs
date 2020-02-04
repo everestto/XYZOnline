@@ -28,13 +28,13 @@ namespace XYZOnline.OrdersPage
 
         public List<Item> Orders { get; set; }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            Orders = _service.GetOrders().ToList();
+            Orders = await _service.GetOrders();
         }
-        public void OnPost()
+        public async Task OnPostAsync()
         {
-            Orders = _service.SearchOrders(ProductName,ProductGroup, ItemType.Order).ToList();
+            Orders = await _service.SearchOrders(ProductName,ProductGroup, ItemType.Order);
         }
     }
 }

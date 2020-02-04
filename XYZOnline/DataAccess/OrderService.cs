@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace XYZOnline.DataAccess
 {
@@ -15,63 +16,65 @@ namespace XYZOnline.DataAccess
             _context = context;
         }
 
-        public Item GetReleaseItem(int id)
+        public async Task<Item> GetReleaseItem(int id)
         {
-            return _context.Items
+            return await _context.Items
                             .Where(s => s.Type == ItemType.Release)
                             .Include(s => s.Product)
                                 .ThenInclude(p => p.Group)
-                            .FirstOrDefault(s => s.ID == id);
+                            .FirstOrDefaultAsync(s => s.ID == id);
         }
 
-        public IEnumerable<Item> GetReleaseItems()
+        public async Task<List<Item>> GetReleaseItems()
         {
-            return _context.Items
+            return await _context.Items
                             .Where(s => s.Type == ItemType.Release)
                             .Include(s => s.Product)
-                                .ThenInclude(p => p.Group);
+                                .ThenInclude(p => p.Group)
+                            .ToListAsync();
         }
-        public Item GetOrder(int id)
+        public async Task<Item> GetOrder(int id)
         {
-            return _context.Items
+            return await _context.Items
                             .Where(s => s.Type == ItemType.Order)
                             .Include(s => s.Product)
                                 .ThenInclude(p => p.Group)
-                            .FirstOrDefault(s => s.ID == id);
+                            .FirstOrDefaultAsync(s => s.ID == id);
         }
 
-        public IEnumerable<Item> GetOrders()
+        public async Task<List<Item>> GetOrders()
         {
-            return _context.Items
+            return await _context.Items
                             .Where(s => s.Type == ItemType.Order)
                             .Include(s => s.Product)
-                                .ThenInclude(p => p.Group);
+                                .ThenInclude(p => p.Group)
+                            .ToListAsync();
         }
 
         public string ErrorMessage { get; set; }
 
-        public bool ProcessOrder(Item item)
+        public async Task<bool> ProcessOrder(Item item)
         {
             item.Type = ItemType.Order;
-            return ProcessIventoryItem( item);
+            return await ProcessIventoryItem(item);
         }
-        public bool ProcessRelease(Item item)
+        public async Task<bool> ProcessRelease(Item item)
         {
             item.Type = ItemType.Release;
-            return ProcessIventoryItem(item);
+            return await ProcessIventoryItem(item);
         }
-        private bool ProcessIventoryItem(Item item)
+        private async Task<bool> ProcessIventoryItem(Item item)
         {
             ErrorMessage = "";
             var service = new InventoryService(_context);
-            bool successful = service.UpdateInventory(item);
+            bool successful = await service.UpdateInventory(item);
             if (successful)
             {
                 item.Date = item.Date.Year == 1 ? DateTime.UtcNow : item.Date;
                 item.Price = item.Product.Price;
 
                 _context.Items.Add(item);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             else
             {
@@ -81,7 +84,7 @@ namespace XYZOnline.DataAccess
             return successful;
         }
 
-        public IEnumerable<Item> SearchOrders(string product, string group, ItemType orderType)
+        public async Task<List<Item>> SearchOrders(string product, string group, ItemType orderType)
         {
             IQueryable<Item> items;
 
@@ -99,9 +102,9 @@ namespace XYZOnline.DataAccess
             else
                 items = _context.Items;
 
-            return items.Where(s => s.Type == orderType)
+            return await items.Where(s => s.Type == orderType)
                         .Include(s => s.Product)
-                            .ThenInclude(p => p.Group).ToList();
+                            .ThenInclude(p => p.Group).ToListAsync();
         }
 
     }

@@ -28,13 +28,13 @@ namespace XYZOnline.SalesPage
 
         public List<Item> Releases { get; set; }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            Releases = _service.GetReleaseItems().ToList();
+            Releases = await _service.GetReleaseItems();
         }
-        public void OnPost()
+        public async Task OnPostAsync()
         {
-            Releases = _service.SearchOrders(ProductName, ProductGroup, ItemType.Release).ToList();
+            Releases = await _service.SearchOrders(ProductName, ProductGroup, ItemType.Release);
         }
     }
 }

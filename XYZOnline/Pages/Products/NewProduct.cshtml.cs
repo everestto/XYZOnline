@@ -24,21 +24,21 @@ namespace XYZOnline
 
         public SelectList ProductGroupOptions { get; set; }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-            PopulateLists();
+            await PopulateListsAsync();
             return Page();
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
-            PopulateLists();
+            await PopulateListsAsync();
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            bool success=_service.Add(Product);
+            bool success=await _service.Add(Product);
             if (!success)
             {
                 ModelState.AddModelError("Product.Name", _service.ErrorMessage);
@@ -47,9 +47,9 @@ namespace XYZOnline
             return RedirectToPage("Index");
         }
 
-        public void PopulateLists()
+        public async Task PopulateListsAsync()
         {
-            IEnumerable<ProductGroup> groups = _service.GetProductGroups();
+            IEnumerable<ProductGroup> groups = await _service.GetProductGroups();
             ProductGroupOptions = new SelectList(groups, nameof(ProductGroup.ID), nameof(ProductGroup.Name));
         }
 

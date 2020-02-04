@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace XYZOnline.DataAccess
 {
@@ -15,35 +16,35 @@ namespace XYZOnline.DataAccess
             _context = context;
         }
 
-        public Product GetProduct(int id)
+        public async Task<Product> GetProduct(int id)
         {
-            return _context.Products.Include(p => p.Group).FirstOrDefault(s => s.ID == id);
+            return await _context.Products.Include(p => p.Group).FirstOrDefaultAsync(s => s.ID == id);
         }
-        public IEnumerable<Product> GetProducts()
+        public async Task<List<Product>> GetProducts()
         {
-            return _context.Products.Include(p => p.Group);
+            return await _context.Products.Include(p => p.Group).ToListAsync();
         }
 
-        public ProductGroup GetProductGroup(int id)
+        public async Task<ProductGroup> GetProductGroup(int id)
         {
-            return _context.ProductGroups.Find(id);
+            return await _context.ProductGroups.FindAsync(id);
         }
-        public IEnumerable<ProductGroup> GetProductGroups()
+        public async Task<List<ProductGroup>> GetProductGroups()
         {
-            return _context.ProductGroups;
+            return await _context.ProductGroups.ToListAsync();
         }
 
         public string ErrorMessage { get; set; }
-        public bool Add(Product product)
+        public async Task<bool> Add(Product product)
         {
             bool success = false;
             try
             {
-                if (!_context.Products.Any(s => s.Name.Equals(product.Name)))
+                if (!await _context.Products.AnyAsync(s => s.Name.Equals(product.Name)))
                 {
-                    product.Group = _context.ProductGroups.Find(product.Group.ID);
+                    product.Group = await _context.ProductGroups.FindAsync(product.Group.ID);
                     _context.Products.Add(product);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     success = true;
                 }
                 else
@@ -58,7 +59,7 @@ namespace XYZOnline.DataAccess
             return success;
         }
 
-        public IEnumerable<Product> SearchProducts(string product, string group)
+        public async Task<List<Product>> SearchProducts(string product, string group)
         {
             IQueryable<Product> items;
             if (!string.IsNullOrEmpty(product) && !string.IsNullOrEmpty(group))
@@ -75,7 +76,7 @@ namespace XYZOnline.DataAccess
             else
                 items = _context.Products;
 
-            return items.Include(s => s.Group).ToList();
+            return await items.Include(s => s.Group).ToListAsync();
         }
 
     }
