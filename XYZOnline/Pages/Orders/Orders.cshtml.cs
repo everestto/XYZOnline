@@ -28,7 +28,7 @@ namespace XYZOnline.OrdersPage
             public int Quantity { get; set; }
 
             [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:N}")]
-            [Range(0D, double.MaxValue, ErrorMessage = "Only positive number allowed")]
+            [Range(0D, double.MaxValue, ErrorMessage = "Negative numbers not allowed")]
             public decimal UnitPrice { get; set; }
         }
 
